@@ -5,5 +5,4 @@ branches:
 projects:
   xuid-impersonation-fixer:
     path: ""
-    icon: "assets/icon.jpg"
 ...
