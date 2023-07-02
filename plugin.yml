@@ -1,0 +1,14 @@
+name: FixValidationXUID
+version: 1.0.0
+api: 5.0.0
+author: Gewinum
+main: gewinum\xuidfix\FixValidation
+
+commands:
+  xuidfix:
+    description: Fix XUID impersonation match problem
+    permission: fixvalidation.command
+
+permissions:
+  fixvalidation.command:
+    default: op
