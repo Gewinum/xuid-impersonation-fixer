@@ -7,8 +7,8 @@ main: gewinum\xuidfix\FixValidation
 commands:
   xuidfix:
     description: Fix XUID impersonation match problem
-    permission: fixvalidation.command
+    permission: fixvalidationxuid.command
 
 permissions:
-  fixvalidation.command:
+  fixvalidationxuid.command:
     default: op
