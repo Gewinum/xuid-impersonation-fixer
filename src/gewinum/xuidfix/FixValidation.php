@@ -20,7 +20,7 @@ class FixValidation extends PluginBase
 
         if (!isset($args[0]) or $args[0] !== "confirm") {
             $sender->sendMessage(TextFormat::YELLOW . "This plugin will kick ALL online players");
-            $sender->sendMessage(TextFormat::YELLOW . "It will flush all saved XUIDs");
+            $sender->sendMessage(TextFormat::YELLOW . "It will flush all XUIDs which are empty string, which also means that it would impact non xbox users");
             $sender->sendMessage(TextFormat::YELLOW . "To continue, type /" . $command->getName() . " confirm");
             return true;
         }
@@ -30,6 +30,7 @@ class FixValidation extends PluginBase
         }
 
         $playersPath = Path::join($this->getServer()->getDataPath(), "players");
+        $removedEmpty = 0;
 
         $files = array_diff(scandir($playersPath), array('.', '..'));
         foreach ($files as $file) {
@@ -46,11 +47,21 @@ class FixValidation extends PluginBase
                 $this->getLogger()->warning("Couldn't get data of $playerName");
                 continue;
             }
+            if ($data->getTag(Player::TAG_LAST_KNOWN_XUID) === null) {
+                continue;
+            }
+            $knownXuid = $data->getString(Player::TAG_LAST_KNOWN_XUID);
+
+            if ($knownXuid !== "") {
+                continue;
+            }
+
             $data->removeTag(Player::TAG_LAST_KNOWN_XUID);
             $this->getServer()->saveOfflinePlayerData($playerName, $data);
+            $removedEmpty++;
         }
 
-        $sender->sendMessage(TextFormat::GREEN . "All stored XUIDs have been erased!");
+        $sender->sendMessage(TextFormat::GREEN . "$removedEmpty XUIDs have been reset!");
         return true;
     }
 }
